@@ -13,8 +13,6 @@ export default class AppContext extends cc.Component {
     public onLoad() {
         AppContext.instance = this;
         cc.game.addPersistRootNode(this.node);
-
-        this.myPlayerId = Player.YAO_ZAI;
     }
 
     public start() {

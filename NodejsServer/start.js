@@ -1,4 +1,4 @@
-const { GameManager } = require("./global_define");
+const { GameManager } = require("./global_reference");
 const { startServer } = require("./server/server")
 
 GameManager.INSTANCE.init();

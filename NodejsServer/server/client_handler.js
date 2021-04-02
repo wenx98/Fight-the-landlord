@@ -2,7 +2,7 @@ const WebSocket = require("ws");
 const { ProtoBase } = require("../net/proto_base");
 
 class ClientHandelr {
-    static clientUnitId = 0;
+    static clientUniqueId = 0;
 
     static clientMap = new Map();
 
@@ -11,11 +11,11 @@ class ClientHandelr {
      */
     static handleNewClient(ws) {
         const self = this;
-        self.clientMap.set(ws, ++self.clientUnitId);
-        console.log("新客户端" + self.clientUnitId + "连接，当前连接数：" + this.clientMap.size);
+        self.clientMap.set(ws, ++self.clientUniqueId);
+        console.log("新客户端" + self.clientUniqueId + "连接，当前连接数：" + this.clientMap.size);
 
         ws.onmessage = (msg) => {
-            self.onmessage(ws, msg);
+            require("../global_reference").ProtoHandler.handleMsg(ws, msg.data);
         }
 
         ws.onerror = (err) => {
@@ -23,18 +23,18 @@ class ClientHandelr {
         }
 
         ws.onclose = () => {
-            console.log("客户端断开: " + self.clientMap.get(ws));
             self.clientMap.delete(ws);
+            console.log("客户端断开: " + self.clientMap.get(ws) + "，当前连接数：" + this.clientMap.size);
         }
     }
 
-    /**
-     * @param {WebSocket} ws 
-     * @param {WebSocket.MessageEvent} msg 
-     */
-    static onmessage(ws, msg) {
-        require("../global_define").ProtoHandler.handleMsg(ws, msg.data);
-    }
+    // /**
+    //  * @param {WebSocket} ws 
+    //  * @param {WebSocket.MessageEvent} msg 
+    //  */
+    // static onmessage(ws, msg) {
+    //     require("../global_reference").ProtoHandler.handleMsg(ws, msg.data);
+    // }
 
     /**
      * @param {WebSocket} ws 

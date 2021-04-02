@@ -1,6 +1,6 @@
 import EventManager, { Events } from "../appContext/EventManager";
 import { Client } from "../net/Client";
-import { ProtoEnterRoom } from "../net/protos/ProtosReady";
+import { ProtoEnterRoom, ProtoCreateRoom } from "../net/protos/ProtosReady";
 import Player from "../game/Player";
 import AppContext from "../appContext/AppContext";
 
@@ -35,8 +35,12 @@ export default class Login extends cc.Component {
         this.nodEnter.active = true;
     }
 
+    private createRoom() {
+        Client.INSTANCE.send(new ProtoCreateRoom());
+    }
+
     private enterRoom() {
-        Client.INSTANCE.send(new ProtoEnterRoom(Player.YAO_ZAI));
+        Client.INSTANCE.send(new ProtoEnterRoom());
     }
 
     private onEnterRoomNotify(data) {

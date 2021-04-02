@@ -1,4 +1,6 @@
-const { Player } = require("./player");
+const WebSocket = require("ws");
+const { ProtoCreateRoom } = require("../net/protos_ready");
+const { Room } = require("./room");
 
 class GameManager {
     static get INSTANCE() {
@@ -11,27 +13,27 @@ class GameManager {
     static instance = null;
 
     // 依赖引用
-    ClientHandelr = require("../global_define").ClientHandelr;
-    Player = require("./player").Player;
+    ClientHandelr = require("../global_reference").ClientHandelr;
 
     // -----------成员变量--------------
-    isStart = false;
-
-    /** @type {Player} */
-    playerYaozai = null;
-    /** @type {Player} */
-    playerQianqian = null;
-    /** @type {Player} */
-    playerAI = null;
-
+    /** @type {Room} */
+    uniqueRoom = null;
 
     // -----------成员函数--------------
     init() {
         console.log("GameManager inited");
-        // this.playerEnterRoom(this.Player.AI);
     }
 
-    createRomm() {
+    /**
+     * @param {WebSocket} ws 
+     */
+    createRoom(ws) {
+        if (!this.uniqueRoom) {
+            this.uniqueRoom = new Room();
+            this.ClientHandelr.send(new ProtoCreateRoom(this.uniqueRoom.id, true))
+        } else {
+
+        }
     }
 }
 

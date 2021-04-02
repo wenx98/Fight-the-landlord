@@ -7,7 +7,7 @@ class ProtoHandler {
      * @param {String} msg 
      */
     static handleMsg(ws, msg) {
-        const GameManager = require("../global_define").GameManager;
+        const GameManager = require("../global_reference").GameManager;
 
         msg = JSON.parse(msg);
         console.log(msg);
@@ -17,6 +17,9 @@ class ProtoHandler {
         }
 
         switch (msg.type) {
+            case ProtoType.CREATE_ROOM:
+                GameManager.INSTANCE.createRoom(ws, msg.data);
+                break;
             case ProtoType.ENTER_ROOM:
                 GameManager.INSTANCE.playerEnterRoom(ws, msg.data)
                 break;

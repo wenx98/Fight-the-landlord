@@ -3,7 +3,7 @@ const WebScoket = require("ws");
 const WebSocketServer = WebScoket.Server;
 
 function startServer() {
-    const ClientHandelr = require("../global_define").ClientHandelr;
+    const ClientHandelr = require("../global_reference").ClientHandelr;
 
     const wss = new WebSocketServer({
         port: 3000
