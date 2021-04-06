@@ -9,49 +9,32 @@ class Room {
     /** @type {[Player]} */
     players = [];
 
-    constructor() {
+    /**
+     * @param {Websocket} ws 
+     */
+    constructor(ws) {
         Room.roomUniqueId++;
         this.id = Room.roomUniqueId;
+        if (ws) {
+            this.addPlayer(ws);
+        }
     }
 
-    playerEnterRoom(ws, data) {
-        // const playerId = data.playerId;
-        // if (playerId === this.Player.QIAN_QIAN) {
-        //     if (this.playerQianqian) {
-        //         this.playerAllreadyInRoom(ws, playerId);
-        //         return;
-        //     }
-        //     this.playerQianqian = new this.Player(ws, playerId);
-        // } else if (playerId === this.Player.YAO_ZAI) {
-        //     if (this.playerYaozai) {
-        //         this.playerAllreadyInRoom(ws, playerId);
-        //         return;
-        //     }
-        //     this.playerYaozai = new this.Player(ws, playerId);
-        // } else if (playerId === this.Player.AI) {
-        //     if (this.playerAI) {
-        //         this.playerAllreadyInRoom(ws, playerId);
-        //         return;
-        //     }
-        //     this.playerAI = new this.Player(ws, playerId);
-        // } else {
-        //     console.log("playerId错误: " + playerId);
-        //     return;
-        // }
+    /**
+    * @param {Websocket} ws 
+    */
+    addPlayer(ws) {
+        if (this.players.length >= 3) {
+            return false;
+        }
 
-        // // 成功进入
-        // console.log("玩家" + playerId + "进入房间");
-        // if (playerId !== this.Player.AI) {
-        //     this.ClientHandelr.send(ws, new ProtoEnterRoom(playerId, true));
-        // }
-    }
-
-    playerAllreadyInRoom(ws, id) {
-        // console.log("玩家" + id + "重复进入房间");
-        // if (id === this.Player.AI) {
-        //     return;
-        // }
-        // this.ClientHandelr.send(ws, new ProtoEnterRoom(id, false));
+        const player = require("./player_manager").PlayerManager.INSTANCE.getPlayerBySocket(ws);
+        if (!player) {
+            console.error("房间添加玩家失败");
+            return false;
+        }
+        this.players.push(player);
+        return true;
     }
 }
 

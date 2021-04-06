@@ -1,5 +1,6 @@
 export enum ProtoType {
-    CREATE_ROOM = 1001,
-    ENTER_ROOM = 1002,
-    REQUEST_PLAYER_IN_ROOM = 1003,
+    LOGIN = 1001,
+    CREATE_ROOM = 1002,
+    ENTER_ROOM = 1003,
+    REQUEST_PLAYER_IN_ROOM = 1004,
 }

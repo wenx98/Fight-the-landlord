@@ -1,7 +1,6 @@
 import EventManager, { Events } from "../appContext/EventManager";
 import { Client } from "../net/Client";
-import { ProtoEnterRoom, ProtoCreateRoom } from "../net/protos/ProtosReady";
-import Player from "../game/Player";
+import { ProtoEnterRoom, ProtoCreateRoom, ProtoLogin } from "../net/protos/ProtosReady";
 import AppContext from "../appContext/AppContext";
 
 const { ccclass, property } = cc._decorator;
@@ -18,12 +17,16 @@ export default class Login extends cc.Component {
         this.nodEnter.active = false;
 
         EventManager.on(Events.SOCKET_CONNECTED, this.onServerConnected, this);
-        EventManager.on(Events.PROTO_NOTIFY_ENTER_ROOM, this.onEnterRoomNotify, this);
+        EventManager.on(Events.PROTO_LOGIN, this.onLoginNotify, this);
+        EventManager.on(Events.PROTO_CREATE_ROOM, this.onCreateRoomNotify, this);
+        EventManager.on(Events.PROTO_ENTER_ROOM, this.onEnterRoomNotify, this);
     }
 
     public onDestroy() {
         EventManager.off(Events.SOCKET_CONNECTED, this.onServerConnected, this);
-        EventManager.off(Events.PROTO_NOTIFY_ENTER_ROOM, this.onEnterRoomNotify, this);
+        EventManager.off(Events.PROTO_LOGIN, this.onLoginNotify, this);
+        EventManager.off(Events.PROTO_CREATE_ROOM, this.onCreateRoomNotify, this);
+        EventManager.off(Events.PROTO_ENTER_ROOM, this.onEnterRoomNotify, this);
     }
 
     public start() {
@@ -32,7 +35,9 @@ export default class Login extends cc.Component {
 
     private onServerConnected() {
         this.connectInfo.string = "连接成功";
-        this.nodEnter.active = true;
+
+        // 登陆获取随机用户id
+        Client.INSTANCE.send(new ProtoLogin());
     }
 
     private createRoom() {
@@ -43,9 +48,31 @@ export default class Login extends cc.Component {
         Client.INSTANCE.send(new ProtoEnterRoom());
     }
 
-    private onEnterRoomNotify(data) {
-        if (data.playerId === AppContext.INSTANCE.getMyPlayerId()) {
+    private onLoginNotify(data) {
+        if (data.success) {
+            this.connectInfo.string = "登陆成功";
+            AppContext.INSTANCE.setPlayerId(data.playerId);
+            this.nodEnter.active = true;
+        } else {
+            this.connectInfo.string = "网络连接异常，登陆失败";
+        }
+    }
+
+    private onCreateRoomNotify(data) {
+        if (data.success) {
+            AppContext.INSTANCE.setRoomId(data.id);
             cc.director.loadScene("game");
+        } else {
+            this.connectInfo.string = "创建房间失败";
+        }
+    }
+
+    private onEnterRoomNotify(data) {
+        if (data.success) {
+            AppContext.INSTANCE.setRoomId(data.id);
+            cc.director.loadScene("game");
+        } else {
+            this.connectInfo.string = "进入房间失败";
         }
     }
 }

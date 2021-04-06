@@ -54,6 +54,13 @@ class ClientHandelr {
     static broadcast(proto) {
         const msg = proto.getMsg();
     }
+
+    /**
+     * @param {WebSocket} ws 
+     */
+    static getClientId(ws) {
+        return this.clientMap.get(ws);
+    }
 };
 
 exports.ClientHandelr = ClientHandelr;

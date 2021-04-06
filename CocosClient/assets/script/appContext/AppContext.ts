@@ -10,6 +10,8 @@ export default class AppContext extends cc.Component {
 
     private myPlayerId: number = 0;
 
+    private roomId: number = 0;
+
     public onLoad() {
         AppContext.instance = this;
         cc.game.addPersistRootNode(this.node);
@@ -17,6 +19,18 @@ export default class AppContext extends cc.Component {
 
     public start() {
         cc.director.loadScene("login");
+    }
+
+    public setRoomId(id: number) {
+        this.roomId = id;
+    }
+
+    public getRoomId() {
+        return this.roomId;
+    }
+
+    public setPlayerId(id: number) {
+        this.myPlayerId = id;
     }
 
     public getMyPlayerId() {

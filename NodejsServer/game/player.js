@@ -1,23 +1,23 @@
 const WebSocket = require("ws");
 
 class Player {
-    // static QIAN_QIAN = 1;
-    // static YAO_ZAI = 2;
-    // static AI = 3;
-
     /** @type {WebSocket} */
     websocket = null;
+
+    /** @type {Number} */
+    id = 0;
 
     /**
      * @param {WebSocket} ws 
      * @param {Number} id 
      */
     constructor(ws, id) {
-
+        this.websocket = ws;
+        this.id = id;
     }
 
     sendCard() {
-        
+
     }
 }
 

@@ -23,11 +23,11 @@ export default class GameManager extends cc.Component {
 
         Client.INSTANCE.send(new ProtoRequestPlayerInRoom());
 
-        EventManager.on(Events.PROTO_NOTIFY_ENTER_ROOM, this.onEnterRoomNotify, this);
+        EventManager.on(Events.PROTO_ENTER_ROOM, this.onEnterRoomNotify, this);
     }
 
     public onDestroy() {
-        EventManager.off(Events.PROTO_NOTIFY_ENTER_ROOM, this.onEnterRoomNotify, this);
+        EventManager.off(Events.PROTO_ENTER_ROOM, this.onEnterRoomNotify, this);
     }
 
     private onEnterRoomNotify(data) {

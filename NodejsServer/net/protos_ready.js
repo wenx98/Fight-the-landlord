@@ -1,6 +1,16 @@
 const { ProtoBase } = require("./proto_base");
 const { ProtoType } = require("./proto_type");
 
+class ProtoLogin extends ProtoBase {
+    type = ProtoType.LOGIN;
+
+    constructor(playerId, success) {
+        super();
+        this.data.playerId = playerId;
+        this.data.success = success;
+    }
+}
+
 class ProtoCreateRoom extends ProtoBase {
     type = ProtoType.CREATE_ROOM;
 
@@ -14,15 +24,13 @@ class ProtoCreateRoom extends ProtoBase {
 class ProtoEnterRoom extends ProtoBase {
     type = ProtoType.ENTER_ROOM;
 
-    constructor(playerId, success) {
+    constructor(roomId, success) {
         super();
-        // const Player = require("../game/player").Player;
-        // if (playerId === Player.QIAN_QIAN || playerId === Player.YAO_ZAI || playerId === Player.AI) {
-        //     this.data.playerId = playerId;
-        //     this.data.success = success;
-        // }
+        this.data.id = roomId;
+        this.data.success = success;
     }
 }
 
+exports.ProtoLogin = ProtoLogin;
 exports.ProtoCreateRoom = ProtoCreateRoom;
 exports.ProtoEnterRoom = ProtoEnterRoom;

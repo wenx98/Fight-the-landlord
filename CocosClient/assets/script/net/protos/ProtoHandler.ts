@@ -11,8 +11,14 @@ export class ProtoHandler {
         }
 
         switch (msg.type) {
+            case ProtoType.LOGIN:
+                EventManager.emit(Events.PROTO_LOGIN, msg.data);
+                break;
+            case ProtoType.CREATE_ROOM:
+                EventManager.emit(Events.PROTO_CREATE_ROOM, msg.data);
+                break;
             case ProtoType.ENTER_ROOM:
-                EventManager.emit(Events.PROTO_NOTIFY_ENTER_ROOM, msg.data);
+                EventManager.emit(Events.PROTO_ENTER_ROOM, msg.data);
                 break;
         }
     }
