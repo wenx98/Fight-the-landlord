@@ -44,7 +44,7 @@ class GameManager {
             this.createRoom(ws);
             return;
         }
-        
+
         if (this.uniqueRoom.addPlayer(ws)) {
             this.ClientHandelr.send(ws, new ProtoEnterRoom(this.uniqueRoom.id, true));
         } else {

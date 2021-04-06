@@ -13,6 +13,11 @@ export class ProtoEnterRoom extends ProtoBase {
     public type = ProtoType.ENTER_ROOM;
 }
 
-export class ProtoRequestPlayerInRoom extends ProtoBase {
-    public type = ProtoType.REQUEST_PLAYER_IN_ROOM;
+export class ProtoRequestRoomInfo extends ProtoBase {
+    public type = ProtoType.REQUEST_ROOM_INFO;
+
+    constructor(id: number) {
+        super();
+        this.data.roomId = id;
+    }
 }
