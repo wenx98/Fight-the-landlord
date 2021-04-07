@@ -1,7 +1,7 @@
 const { Player } = require("./player");
 
 class Room {
-    static roomUniqueId = 0;
+    static roomUniqueId = 1;
     // -----------成员变量--------------
     id = 0;
     isStart = false;
@@ -9,15 +9,18 @@ class Room {
     /** @type {[Player]} */
     players = [];
 
+    curPlayerId = 0;
+    leftTime = 0
+
     /**
      * @param {Websocket} ws 
      */
     constructor(ws) {
-        Room.roomUniqueId++;
         this.id = Room.roomUniqueId;
         if (ws) {
             this.addPlayer(ws);
         }
+        Room.roomUniqueId++;
     }
 
     /**
@@ -35,6 +38,19 @@ class Room {
         }
         this.players.push(player);
         return true;
+    }
+
+    getRoomInfo() {
+        const info = {};
+        info.roomId = this.id;
+        info.isStart = this.isStart;
+        info.curPlayer = this.curPlayerId;
+        info.leftTime = this.leftTime;
+        info.playersId = [];
+        for (let i = 0; i < this.players.length; i++) {
+            info.playersId.push(this.players[i].id);
+        }
+        return info;
     }
 }
 

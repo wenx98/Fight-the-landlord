@@ -3,6 +3,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Player extends cc.Component {
     protected id: number = 0;
+    protected isReady: boolean = false;
 
     public init(id: number) {
         this.id = id;

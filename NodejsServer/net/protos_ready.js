@@ -31,6 +31,27 @@ class ProtoEnterRoom extends ProtoBase {
     }
 }
 
+class ProtoRequestRoomInfo extends ProtoBase {
+    type = ProtoType.REQUEST_ROOM_INFO;
+
+    /**
+     * @param {Number} roomId
+     * @param {[Number]} playersId
+     * @param {boolean} isStart
+     * @param {Number} curPlayer
+     * @param {Number} leftTime
+     */
+    constructor(roomId, playersId, isStart, curPlayer, leftTime) {
+        super();
+        this.data.roomId = roomId;
+        this.data.playersId = playersId;
+        this.data.isStart = isStart;
+        this.data.curPlayer = curPlayer;
+        this.data.leftTime = leftTime;
+    }
+}
+
 exports.ProtoLogin = ProtoLogin;
 exports.ProtoCreateRoom = ProtoCreateRoom;
 exports.ProtoEnterRoom = ProtoEnterRoom;
+exports.ProtoRequestRoomInfo = ProtoRequestRoomInfo;

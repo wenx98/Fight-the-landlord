@@ -27,6 +27,9 @@ class ProtoHandler {
             case ProtoType.ENTER_ROOM:
                 GameManager.INSTANCE.playerEnterRoom(ws)
                 break;
+            case ProtoType.REQUEST_ROOM_INFO:
+                GameManager.INSTANCE.requestRoomInfo(ws, msg.data);
+                break;
         }
     }
 }

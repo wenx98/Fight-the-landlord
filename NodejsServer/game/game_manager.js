@@ -1,5 +1,5 @@
 const WebSocket = require("ws");
-const { ProtoCreateRoom, ProtoEnterRoom } = require("../net/protos_ready");
+const { ProtoCreateRoom, ProtoEnterRoom, ProtoRequestRoomInfo } = require("../net/protos_ready");
 const { Room } = require("./room");
 
 class GameManager {
@@ -50,6 +50,19 @@ class GameManager {
         } else {
             this.ClientHandelr.send(ws, new ProtoEnterRoom(-1, false))
         }
+    }
+
+    /**
+     * @param {WebSocket} ws 
+     */
+    requestRoomInfo(ws, data) {
+        const roomId = data.roomId;
+        if (roomId == null || roomId !== this.uniqueRoom.id) {
+            return;
+        }
+        const info = this.uniqueRoom.getRoomInfo();
+        const proto = new ProtoRequestRoomInfo(info.roomId, info.playersId, info.isStart, info.curPlayer, info.leftTime);
+        this.ClientHandelr.send(ws, proto);
     }
 }
 
